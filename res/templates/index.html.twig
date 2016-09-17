@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+    <link href="/res/css/style.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        var hidden = {};
+        function toggleVisible(head, row) {
+            if (!hidden[row]) {
+                d3.selectAll(row).transition().style('display', 'none');
+                hidden[row] = true;
+                d3.select(head).transition().style('color', '#ccc');
+            } else {
+                d3.selectAll(row).transition().style('display');
+                hidden[row] = false;
+                d3.select(head).transition().style('color', '#000');
+            }
+        }
+    </script>
+    <title>{{ title }}</title>
+</head>
+
+<body>
+<div id="container">
+    <h1>{{ title }}</h1>
+
+    <div class="tabs">
+
+        <div class="tab">
+            <input type="radio" id="tab-status" name="tab-group-1" checked>
+            <label for="tab-status">Status</label>
+            <div class="content">
+                <table>
+                    {{ status_data_rows | join | raw }}
+                </table>
+            </div>
+        </div>
+
+        <div class="tab">
+            <input type="radio" id="tab-config" name="tab-group-1">
+            <label for="tab-config">Configuration</label>
+            <div class="content">
+                <table>
+                    {{ config_data_rows | join | raw }}
+                </table>
+            </div>
+        </div>
+
+        <div class="tab">
+            <input type="radio" id="tab-scripts" name="tab-group-1">
+            <label for="tab-scripts">Scripts ({{ script_status_count }})</label>
+            <div class="content">
+                <table style="font-size:0.8em;">
+                    <tr>
+                        <th width="10%">Hits</th>
+                        <th width="20%">Memory</th>
+                        <th width="70%">Path</th>
+                    </tr>
+                    {{ script_status_rows | join | raw }}
+                </table>
+            </div>
+        </div>
+
+        <div class="tab">
+            <input type="radio" id="tab-visualise" name="tab-group-1">
+            <label for="tab-visualise">Visualise Partition</label>
+            <div class="content"></div>
+        </div>
+
+    </div>
+
+    <div id="graph">
+        <form>
+            <label><input type="radio" name="dataset" value="memory" checked> Memory</label>
+            <label><input type="radio" name="dataset" value="keys"> Keys</label>
+            <label><input type="radio" name="dataset" value="hits"> Hits</label>
+            <label><input type="radio" name="dataset" value="restarts"> Restarts</label>
+        </form>
+
+        <div id="stats"></div>
+    </div>
+</div>
+
+<div id="close-partition">&#10006; Close Visualisation</div>
+<div id="partition"></div>
+
+<script>
+    var dataset = {{ graph_data_set_json | json_encode | raw }};
+    var root = {{ d3_scripts | json_encode | raw }};
+    var humanReadable = {{ {
+        'human_used_memory': human_used_memory,
+        'human_free_memory': human_free_memory,
+        'human_wasted_memory': human_wasted_memory,
+        'wasted_memory_percentage': wasted_memory_percentage,
+    } | json_encode | raw }};
+</script>
+<script src="/res/js/script.js" type="application/javascript"></script>
+</body>
+</html>

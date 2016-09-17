@@ -9,6 +9,16 @@
         }
     ],
     "require": {
-        "PHP": ">=5.5.0"
+        "PHP": ">=5.5.0",
+        "silex/silex": "^2.0",
+        "twig/twig": "^1.24"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpCache\\": "src"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3.1"
     }
 }
