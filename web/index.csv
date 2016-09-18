@@ -1,0 +1,2 @@
+468493,::1,GET,http://localhost:8000/configuration,1474151819,,500
+360ffc,::1,GET,http://localhost:8000/configuration?_format=json,1474151822,,500
